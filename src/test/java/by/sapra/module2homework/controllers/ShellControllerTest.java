@@ -35,7 +35,7 @@ class ShellControllerTest {
     }
 
     @Test
-    void shouldDoSomething() throws Exception {
+    void shouldCorrectCollectTheString() throws Exception {
         List<Student> students = List.of(
                 Student.builder().age(12).firstName("one").lastName("lone").build(),
                 Student.builder().age(12).firstName("two").lastName("ltwo").build(),
