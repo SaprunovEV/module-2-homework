@@ -62,7 +62,7 @@ class ShellControllerTest {
         }
     }
 
-    private static Predicate<String> getStringPredicate(String expectedFirstName, String expectedLastName, String expectedAge) {
+    private Predicate<String> getStringPredicate(String expectedFirstName, String expectedLastName, String expectedAge) {
         return l ->
         {
             boolean containsA = l.contains(expectedAge);
