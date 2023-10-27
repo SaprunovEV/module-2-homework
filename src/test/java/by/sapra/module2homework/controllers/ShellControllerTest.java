@@ -11,12 +11,13 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.text.MessageFormat;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class ShellControllerTest {
@@ -46,6 +47,27 @@ class ShellControllerTest {
         String actual = shellController.getAllStudents();
 
         assertStudentsString(students, actual);
+    }
+
+    @Test
+    void shouldCallStudentServiceAndPrepareAResultString() throws Exception {
+        String firstName = "testFirstName";
+        String lastName = "testLastName";
+        int age = 23;
+
+        Student student = Student.builder()
+                .firstName(firstName)
+                .lastName(lastName)
+                .age(age)
+                .build();
+        Student resultStudent = Student.builder().id(UUID.randomUUID()).build();
+        when(studentServices.createNewStudent(student)).thenReturn(resultStudent);
+
+        String result = shellController.createNewStudent(firstName, lastName, age);
+
+        assertTrue(result.contains(resultStudent.getId().toString()));
+
+        verify(studentServices, times(1)).createNewStudent(eq(student));
     }
 
     private void assertStudentsString(List<Student> students, String actual) {
