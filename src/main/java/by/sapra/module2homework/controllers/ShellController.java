@@ -37,4 +37,9 @@ public class ShellController {
     public void deleteStudent(UUID id) {
         studentServices.deleteStudent(id);
     }
+
+    @ShellMethod
+    public void clearAll() {
+        studentServices.clearDatabase();
+    }
 }

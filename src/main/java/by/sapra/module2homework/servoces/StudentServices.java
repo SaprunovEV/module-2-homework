@@ -11,4 +11,6 @@ public interface StudentServices {
     Student createNewStudent(Student student);
 
     Student deleteStudent(UUID eq);
+
+    List<String> clearDatabase();
 }

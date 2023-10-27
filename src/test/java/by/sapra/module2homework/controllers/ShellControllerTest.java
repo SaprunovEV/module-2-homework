@@ -77,6 +77,13 @@ class ShellControllerTest {
         verify(studentServices, times(1)).deleteStudent(eq(id));
     }
 
+    @Test
+    void shouldCallStudentServiceToDeleteAllStudents() throws Exception {
+        shellController.clearAll();
+
+        verify(studentServices, times(1)).clearDatabase();
+    }
+
     private void assertStudentsString(List<Student> students, String actual) {
         for (Student student : students) {
             Stream<String> lines = actual.trim().lines();
