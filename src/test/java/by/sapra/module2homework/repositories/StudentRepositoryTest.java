@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -28,6 +29,29 @@ class StudentRepositoryTest {
         StudentEntity actual = repository.save(student);
 
         assertStudent(student, actual);
+    }
+
+    @Test
+    void shouldDoSomething() throws Exception {
+        List<StudentEntity> studentsList = List.of(
+                getEntityWithId("first1", "last1", 23),
+                getEntityWithId("first2", "last2", 23),
+                getEntityWithId("first3", "last3", 23),
+                getEntityWithId("first4", "last4", 23),
+                getEntityWithId("first5", "last5", 23)
+        );
+
+        studentsList.forEach(s -> students.put(s.getId(), s));
+
+        repository.clear();
+
+        assertEquals(0, students.size());
+    }
+
+    private StudentEntity getEntityWithId(String first1, String last1, int i) {
+        StudentEntity entity = getEntity(first1, last1, i);
+        entity.setId(UUID.randomUUID());
+        return entity;
     }
 
     private void assertStudent(StudentEntity student, StudentEntity actual) {

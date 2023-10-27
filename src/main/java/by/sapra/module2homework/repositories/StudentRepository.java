@@ -18,4 +18,8 @@ public class StudentRepository {
         students.put(student.getId(), student);
         return student;
     }
+
+    public void clear() {
+        students.clear();
+    }
 }
