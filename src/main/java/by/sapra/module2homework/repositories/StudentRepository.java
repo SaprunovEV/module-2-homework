@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 
 @Repository
@@ -26,5 +27,10 @@ public class StudentRepository {
 
     public List<StudentEntity> findAll() {
         return students.values().stream().toList();
+    }
+
+    public Optional<StudentEntity> delete(UUID id) {
+        StudentEntity remove = students.remove(id);
+        return remove != null ? Optional.of(remove) : Optional.empty();
     }
 }

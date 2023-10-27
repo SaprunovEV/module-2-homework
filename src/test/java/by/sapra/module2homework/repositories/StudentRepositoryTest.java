@@ -60,6 +60,28 @@ class StudentRepositoryTest {
         assertTrue(actual.isEmpty());
     }
 
+    @Test
+    void shouldDeleteStudentIfKeyIsPresent() throws Exception {
+        List<StudentEntity> entities = saveEntities();
+
+        Optional<StudentEntity> actual = repository.delete(entities.get(0).getId());
+
+        assertAll(() -> {
+            assertFalse(students.containsKey(entities.get(0).getId()));
+            assertTrue(actual.isPresent());
+        });
+    }
+
+    @Test
+    void shouldReturnEmptyOptionalIfIdIsNotPresent() throws Exception {
+        List<StudentEntity> entities = saveEntities();
+        StudentEntity remove = students.remove(entities.get(0).getId());
+
+        Optional<StudentEntity> actual = repository.delete(remove.getId());
+
+        assertTrue(actual.isEmpty());
+    }
+
     @AfterEach
     void tearDown() {
         students.clear();
