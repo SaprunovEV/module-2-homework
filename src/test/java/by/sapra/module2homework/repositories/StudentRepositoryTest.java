@@ -32,7 +32,7 @@ class StudentRepositoryTest {
     }
 
     @Test
-    void shouldDoSomething() throws Exception {
+    void shouldClearDatabase() throws Exception {
         List<StudentEntity> studentsList = List.of(
                 getEntityWithId("first1", "last1", 23),
                 getEntityWithId("first2", "last2", 23),
@@ -47,6 +47,8 @@ class StudentRepositoryTest {
 
         assertEquals(0, students.size());
     }
+
+
 
     private StudentEntity getEntityWithId(String first1, String last1, int i) {
         StudentEntity entity = getEntity(first1, last1, i);
