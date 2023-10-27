@@ -1,6 +1,7 @@
 package by.sapra.module2homework.repositories;
 
 import by.sapra.module2homework.model.entities.StudentEntity;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,6 +51,18 @@ class StudentRepositoryTest {
             List<StudentEntity> emptyList = actual.stream().filter(s -> !entities.contains(s)).toList();
             assertTrue(emptyList.isEmpty());
         });
+    }
+
+    @Test
+    void shouldReturnEmptyList() throws Exception {
+        List<StudentEntity> actual = repository.findAll();
+
+        assertTrue(actual.isEmpty());
+    }
+
+    @AfterEach
+    void tearDown() {
+        students.clear();
     }
 
     private List<StudentEntity> saveEntities() {
