@@ -53,11 +53,15 @@ class StudentRepositoryTest {
 
     @Test
     void shouldClearDatabase() throws Exception {
-        saveEntities();
+        List<StudentEntity> expected = saveEntities();
 
-        repository.clear();
+        List<StudentEntity> actual = repository.clear();
 
-        assertEquals(0, students.size());
+        assertAll(() -> {
+            assertEquals(0, students.size());
+            List<StudentEntity> emptyList = actual.stream().filter(s -> !expected.contains(s)).toList();
+            assertTrue(emptyList.isEmpty());
+        });
     }
 
     @Test

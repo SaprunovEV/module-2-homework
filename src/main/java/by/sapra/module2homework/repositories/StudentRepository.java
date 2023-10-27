@@ -24,8 +24,10 @@ public class StudentRepository {
         return students.put(student.getId(), student);
     }
 
-    public void clear() {
+    public List<StudentEntity> clear() {
+        List<StudentEntity> result = students.values().stream().toList();
         students.clear();
+        return result;
     }
 
     public List<StudentEntity> findAll() {
