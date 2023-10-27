@@ -32,6 +32,26 @@ class StudentRepositoryTest {
     }
 
     @Test
+    void shouldUpdateEntityIfIdIsPresent() throws Exception {
+        List<StudentEntity> entities = saveEntities();
+
+        UUID expectedId = entities.get(0).getId();
+        StudentEntity expected = StudentEntity.builder()
+                .id(expectedId)
+                .firstName("newFn")
+                .lastName("newLn")
+                .age(34)
+                .build();
+
+        StudentEntity actual = repository.save(expected);
+
+        assertAll(() -> {
+            assertEquals(expectedId, actual.getId());
+            assertStudent(expected, actual);
+        });
+    }
+
+    @Test
     void shouldClearDatabase() throws Exception {
         saveEntities();
 

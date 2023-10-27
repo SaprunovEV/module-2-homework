@@ -16,9 +16,12 @@ public class StudentRepository {
     private final Map<UUID, StudentEntity> students;
 
     public StudentEntity save(StudentEntity student) {
-        student.setId(UUID.randomUUID());
-        students.put(student.getId(), student);
-        return student;
+        if (student.getId() == null){
+            student.setId(UUID.randomUUID());
+            students.put(student.getId(), student);
+            return student;
+        }
+        return students.put(student.getId(), student);
     }
 
     public void clear() {
