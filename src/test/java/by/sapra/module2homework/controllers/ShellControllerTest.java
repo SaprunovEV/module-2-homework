@@ -63,11 +63,18 @@ class ShellControllerTest {
         Student resultStudent = Student.builder().id(UUID.randomUUID()).build();
         when(studentServices.createNewStudent(student)).thenReturn(resultStudent);
 
-        String result = shellController.createNewStudent(firstName, lastName, age);
-
-        assertTrue(result.contains(resultStudent.getId().toString()));
+        shellController.createNewStudent(firstName, lastName, age);
 
         verify(studentServices, times(1)).createNewStudent(eq(student));
+    }
+
+    @Test
+    void shouldCallStudentServiceForDeletingStudent() throws Exception {
+        UUID id = UUID.randomUUID();
+
+        shellController.deleteStudent(id);
+
+        verify(studentServices, times(1)).deleteStudent(eq(id));
     }
 
     private void assertStudentsString(List<Student> students, String actual) {

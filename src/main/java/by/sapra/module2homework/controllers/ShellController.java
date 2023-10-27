@@ -6,8 +6,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 
-import java.text.MessageFormat;
 import java.util.List;
+import java.util.UUID;
 
 @ShellComponent
 @RequiredArgsConstructor
@@ -24,13 +24,17 @@ public class ShellController {
     }
 
     @ShellMethod
-    public String createNewStudent(String firstName, String lastName, int age) {
+    public void createNewStudent(String firstName, String lastName, int age) {
         Student newStudent = Student.builder()
                 .age(age)
                 .firstName(firstName)
                 .lastName(lastName)
                 .build();
         Student student = studentServices.createNewStudent(newStudent);
-        return MessageFormat.format("New student with id {0} have to created", student.getId());
+    }
+
+    @ShellMethod
+    public void deleteStudent(UUID id) {
+        studentServices.deleteStudent(id);
     }
 }
