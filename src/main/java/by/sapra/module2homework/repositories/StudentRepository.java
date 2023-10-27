@@ -4,6 +4,7 @@ import by.sapra.module2homework.model.entities.StudentEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -21,5 +22,9 @@ public class StudentRepository {
 
     public void clear() {
         students.clear();
+    }
+
+    public List<StudentEntity> findAll() {
+        return students.values().stream().toList();
     }
 }

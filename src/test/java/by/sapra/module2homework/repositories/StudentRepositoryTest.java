@@ -7,9 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -38,6 +37,19 @@ class StudentRepositoryTest {
         repository.clear();
 
         assertEquals(0, students.size());
+    }
+
+    @Test
+    void shouldFindOnlyExistingEntities() throws Exception {
+        List<StudentEntity> entities = saveEntities();
+
+        List<StudentEntity> actual = repository.findAll();
+
+        assertAll(() -> {
+            assertEquals(entities.size(), actual.size());
+            List<StudentEntity> emptyList = actual.stream().filter(s -> !entities.contains(s)).toList();
+            assertTrue(emptyList.isEmpty());
+        });
     }
 
     private List<StudentEntity> saveEntities() {
