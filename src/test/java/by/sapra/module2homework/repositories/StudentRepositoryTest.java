@@ -65,6 +65,12 @@ class StudentRepositoryTest {
     }
 
     @Test
+    void shouldClearDatabaseAndReturnEmptyListIfDatabaseWasEmpty() throws Exception {
+        List<StudentEntity> actual = repository.clear();
+        assertTrue(actual.isEmpty());
+    }
+
+    @Test
     void shouldFindOnlyExistingEntities() throws Exception {
         List<StudentEntity> entities = saveEntities();
 
