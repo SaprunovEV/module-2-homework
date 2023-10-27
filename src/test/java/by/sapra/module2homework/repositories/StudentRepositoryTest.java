@@ -82,6 +82,26 @@ class StudentRepositoryTest {
         assertTrue(actual.isEmpty());
     }
 
+    @Test
+    void shouldFindEntityById() throws Exception {
+        List<StudentEntity> entities = saveEntities();
+        Optional<StudentEntity> optional = repository.findById(entities.get(0).getId());
+        assertAll(() -> {
+            assertTrue(optional.isPresent());
+            assertEquals(entities.get(0), optional.get());
+        });
+    }
+
+    @Test
+    void shouldFindEmptyOptionalIfIdIsNotPresent() throws Exception {
+        List<StudentEntity> entities = saveEntities();
+        StudentEntity remove = students.remove(entities.get(0).getId());
+
+        Optional<StudentEntity> actual = repository.findById(remove.getId());
+
+        assertTrue(actual.isEmpty());
+    }
+
     @AfterEach
     void tearDown() {
         students.clear();

@@ -33,4 +33,9 @@ public class StudentRepository {
         StudentEntity remove = students.remove(id);
         return remove != null ? Optional.of(remove) : Optional.empty();
     }
+
+    public Optional<StudentEntity> findById(UUID id) {
+        StudentEntity entity = students.get(id);
+        return entity != null ? Optional.of(entity) : Optional.empty();
+    }
 }
