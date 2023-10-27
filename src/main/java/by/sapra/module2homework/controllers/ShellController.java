@@ -1,6 +1,7 @@
 package by.sapra.module2homework.controllers;
 
-import by.sapra.module2homework.model.Student;
+import by.sapra.module2homework.model.StudentPayload;
+import by.sapra.module2homework.model.StudentRequest;
 import by.sapra.module2homework.servoces.StudentServices;
 import lombok.RequiredArgsConstructor;
 import org.springframework.shell.standard.ShellComponent;
@@ -17,20 +18,20 @@ public class ShellController {
 
     @ShellMethod
     public String getAllStudents() {
-        List<Student> allStudents = studentServices.getAll();
+        List<StudentRequest> allStudentRequests = studentServices.getAll();
         StringBuilder sb = new StringBuilder();
-        for (Student student : allStudents) sb.append(student.toString()).append("\n");
+        for (StudentRequest studentRequest : allStudentRequests) sb.append(studentRequest.toString()).append("\n");
         return sb.toString();
     }
 
     @ShellMethod
     public void createNewStudent(String firstName, String lastName, int age) {
-        Student newStudent = Student.builder()
+        StudentPayload studentPayload = StudentPayload.builder()
                 .age(age)
                 .firstName(firstName)
                 .lastName(lastName)
                 .build();
-        Student student = studentServices.createNewStudent(newStudent);
+        StudentRequest studentRequest = studentServices.createNewStudent(studentPayload);
     }
 
     @ShellMethod

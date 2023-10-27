@@ -1,16 +1,17 @@
 package by.sapra.module2homework.servoces;
 
-import by.sapra.module2homework.model.Student;
+import by.sapra.module2homework.model.StudentPayload;
+import by.sapra.module2homework.model.StudentRequest;
 
 import java.util.List;
 import java.util.UUID;
 
 public interface StudentServices {
-    List<Student> getAll();
+    List<StudentRequest> getAll();
 
-    Student createNewStudent(Student student);
+    StudentRequest createNewStudent(StudentPayload studentRequest);
 
-    Student deleteStudent(UUID eq);
+    StudentRequest deleteStudent(UUID eq);
 
     List<String> clearDatabase();
 }

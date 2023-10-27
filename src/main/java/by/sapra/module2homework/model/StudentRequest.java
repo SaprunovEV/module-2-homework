@@ -4,13 +4,11 @@ import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
-import java.util.UUID;
-
 @Getter
 @Builder
 @EqualsAndHashCode
-public class Student {
-    private UUID id;
+public class StudentRequest {
+    private String id;
     private String firstName;
     private String lastName;
     private Integer age;
