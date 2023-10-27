@@ -33,6 +33,14 @@ class StudentRepositoryTest {
 
     @Test
     void shouldClearDatabase() throws Exception {
+        saveEntities();
+
+        repository.clear();
+
+        assertEquals(0, students.size());
+    }
+
+    private List<StudentEntity> saveEntities() {
         List<StudentEntity> studentsList = List.of(
                 getEntityWithId("first1", "last1", 23),
                 getEntityWithId("first2", "last2", 23),
@@ -40,14 +48,9 @@ class StudentRepositoryTest {
                 getEntityWithId("first4", "last4", 23),
                 getEntityWithId("first5", "last5", 23)
         );
-
         studentsList.forEach(s -> students.put(s.getId(), s));
-
-        repository.clear();
-
-        assertEquals(0, students.size());
+        return studentsList;
     }
-
 
 
     private StudentEntity getEntityWithId(String first1, String last1, int i) {
