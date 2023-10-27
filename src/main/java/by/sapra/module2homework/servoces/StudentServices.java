@@ -10,5 +10,5 @@ public interface StudentServices {
 
     Student createNewStudent(Student student);
 
-    void deleteStudent(UUID eq);
+    Student deleteStudent(UUID eq);
 }
