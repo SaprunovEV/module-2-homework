@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -36,7 +37,17 @@ public class StudentServiceImpl implements StudentServices {
 
     @Override
     public StudentRequest deleteStudent(String eq) {
-        return null;
+        Optional<StudentEntity> entity = repository.delete(UUID.fromString(eq));
+        if (entity.isPresent()) {
+            StudentEntity student = entity.get();
+            publisher.deleteEventPublish(this, new DeleteEvent(student.getId().toString()));
+            return StudentRequest.builder()
+                    .id(student.getId().toString())
+                    .lastName(student.getLastName())
+                    .firstName(student.getFirstName())
+                    .build();
+        }
+        return StudentRequest.builder().id("").firstName("").lastName("").age(0).build();
     }
 
     @Override

@@ -72,6 +72,27 @@ class StudentServiceImplTest {
         String idForDelete = saveEntities().get(0).getId().toString();
 
         StudentRequest studentRequest = services.deleteStudent(idForDelete);
+
+        assertFalse(studentMap.containsKey(UUID.fromString(idForDelete)));
+
+        verify(studentEventPublisher, times(1)).deleteEventPublish(eq(services), any(DeleteEvent.class));
+    }
+
+    @Test
+    void shouldReturnEmptyRequestAndPublishAboutNotDelete() throws Exception {
+        UUID id = saveEntities().get(0).getId();
+        studentMap.remove(id);
+
+        StudentRequest studentRequest = services.deleteStudent(id.toString());
+
+        assertAll(() -> {
+            assertTrue(studentRequest.getId().isEmpty());
+            assertTrue(studentRequest.getFirstName().isEmpty());
+            assertTrue(studentRequest.getLastName().isEmpty());
+            assertEquals(0, (int) studentRequest.getAge());
+        });
+
+        verify(studentEventPublisher, times(0)).deleteEventPublish(eq(services), any(DeleteEvent.class));
     }
 
     private List<String> assertList(List<StudentEntity> entities, List<StudentRequest> actual) {
