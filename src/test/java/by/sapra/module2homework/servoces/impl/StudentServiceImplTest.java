@@ -1,7 +1,9 @@
 package by.sapra.module2homework.servoces.impl;
 
+import by.sapra.module2homework.events.CreateEvent;
 import by.sapra.module2homework.events.DeleteEvent;
 import by.sapra.module2homework.events.StudentEventPublisher;
+import by.sapra.module2homework.model.StudentPayload;
 import by.sapra.module2homework.model.StudentRequest;
 import by.sapra.module2homework.model.entities.StudentEntity;
 import by.sapra.module2homework.repositories.StudentRepositoryConf;
@@ -75,7 +77,7 @@ class StudentServiceImplTest {
 
         assertFalse(studentMap.containsKey(UUID.fromString(idForDelete)));
 
-        verify(studentEventPublisher, times(1)).deleteEventPublish(eq(services), any(DeleteEvent.class));
+        verify(studentEventPublisher, times(1)).deleteEventPublish(eq(services), eq(new DeleteEvent(idForDelete)));
     }
 
     @Test
@@ -93,6 +95,31 @@ class StudentServiceImplTest {
         });
 
         verify(studentEventPublisher, times(0)).deleteEventPublish(eq(services), any(DeleteEvent.class));
+    }
+
+    @Test
+    void shouldCreateStudentAndPublishInformationAboutIt() throws Exception {
+        StudentPayload studentPayload = StudentPayload.builder()
+                .age(1)
+                .firstName("testFirstName")
+                .lastName("testLastName")
+                .build();
+
+        StudentRequest newStudent = services.createNewStudent(studentPayload);
+
+        assertStudentCreation(studentPayload, newStudent);
+
+        verify(studentEventPublisher, times(1)).createStudentPublish(eq(services), eq(new CreateEvent(newStudent)));
+    }
+
+    private void assertStudentCreation(StudentPayload studentPayload, StudentRequest newStudent) {
+        assertAll(() -> {
+            assertTrue(studentMap.containsKey(UUID.fromString(newStudent.getId())));
+            StudentEntity entity = studentMap.get(UUID.fromString(newStudent.getId()));
+            assertEquals(studentPayload.getFirstName(), entity.getFirstName());
+            assertEquals(studentPayload.getLastName(), entity.getLastName());
+            assertEquals(studentPayload.getAge(), entity.getAge());
+        });
     }
 
     private List<String> assertList(List<StudentEntity> entities, List<StudentRequest> actual) {

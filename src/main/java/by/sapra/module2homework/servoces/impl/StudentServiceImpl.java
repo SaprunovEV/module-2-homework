@@ -1,5 +1,6 @@
 package by.sapra.module2homework.servoces.impl;
 
+import by.sapra.module2homework.events.CreateEvent;
 import by.sapra.module2homework.events.DeleteEvent;
 import by.sapra.module2homework.events.StudentEventPublisher;
 import by.sapra.module2homework.model.StudentPayload;
@@ -32,7 +33,22 @@ public class StudentServiceImpl implements StudentServices {
 
     @Override
     public StudentRequest createNewStudent(StudentPayload studentRequest) {
-        return null;
+        StudentEntity entity = repository.save(StudentEntity.builder()
+                .age(studentRequest.getAge())
+                .lastName(studentRequest.getLastName())
+                .firstName(studentRequest.getFirstName())
+                .build());
+
+        StudentRequest result = StudentRequest.builder()
+                .age(entity.getAge())
+                .firstName(entity.getFirstName())
+                .lastName(entity.getLastName())
+                .id(entity.getId().toString())
+                .build();
+
+        publisher.createStudentPublish(this, new CreateEvent(result));
+
+        return result;
     }
 
     @Override
