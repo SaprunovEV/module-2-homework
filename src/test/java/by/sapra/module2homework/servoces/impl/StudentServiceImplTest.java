@@ -2,7 +2,7 @@ package by.sapra.module2homework.servoces.impl;
 
 import by.sapra.module2homework.events.CreateEvent;
 import by.sapra.module2homework.events.DeleteEvent;
-import by.sapra.module2homework.events.StudentEventPublisher;
+import by.sapra.module2homework.events.pablishers.StudentEventPublisher;
 import by.sapra.module2homework.model.StudentPayload;
 import by.sapra.module2homework.model.StudentResponse;
 import by.sapra.module2homework.model.entities.StudentEntity;
