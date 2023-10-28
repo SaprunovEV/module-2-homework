@@ -67,6 +67,13 @@ class StudentServiceImplTest {
         verify(studentEventPublisher, times(expected.size())).deleteEventPublish(eq(services), any(DeleteEvent.class));
     }
 
+    @Test
+    void shouldPublishIdDeletingStudent() throws Exception {
+        String idForDelete = saveEntities().get(0).getId().toString();
+
+        StudentRequest studentRequest = services.deleteStudent(idForDelete);
+    }
+
     private List<String> assertList(List<StudentEntity> entities, List<StudentRequest> actual) {
         return actual.stream().map(StudentRequest::getId).filter(id -> !entities.stream().map(StudentEntity::getId).map(Objects::toString).toList().contains(id)).toList();
     }

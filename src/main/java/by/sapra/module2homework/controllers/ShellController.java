@@ -35,7 +35,7 @@ public class ShellController {
     }
 
     @ShellMethod
-    public void deleteStudent(UUID id) {
+    public void deleteStudent(String id) {
         studentServices.deleteStudent(id);
     }
 

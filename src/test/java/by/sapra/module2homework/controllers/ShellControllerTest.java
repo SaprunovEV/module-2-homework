@@ -71,7 +71,7 @@ class ShellControllerTest {
 
     @Test
     void shouldCallStudentServiceForDeletingStudent() throws Exception {
-        UUID id = UUID.randomUUID();
+        String id = UUID.randomUUID().toString();
 
         shellController.deleteStudent(id);
 

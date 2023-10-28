@@ -35,7 +35,7 @@ public class StudentServiceImpl implements StudentServices {
     }
 
     @Override
-    public StudentRequest deleteStudent(UUID eq) {
+    public StudentRequest deleteStudent(String eq) {
         return null;
     }
 
