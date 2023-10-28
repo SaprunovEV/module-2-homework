@@ -17,7 +17,7 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
-public class StudentServiceImpl implements StudentServices {
+class StudentServiceImpl implements StudentServices {
     private final StudentRepository repository;
     private final StudentEventPublisher publisher;
     @Override

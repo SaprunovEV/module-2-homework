@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class StudentEventPublisherImpl implements StudentEventPublisher {
+class StudentEventPublisherImpl implements StudentEventPublisher {
     private final ApplicationEventPublisher publisher;
 
     @Override
