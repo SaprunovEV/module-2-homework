@@ -1,7 +1,7 @@
 package by.sapra.module2homework.controllers;
 
 import by.sapra.module2homework.model.StudentPayload;
-import by.sapra.module2homework.model.StudentRequest;
+import by.sapra.module2homework.model.StudentResponse;
 import by.sapra.module2homework.servoces.StudentServices;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -38,16 +38,16 @@ class ShellControllerTest {
 
     @Test
     void shouldCorrectCollectTheString() throws Exception {
-        List<StudentRequest> studentRequests = List.of(
-                StudentRequest.builder().age(12).firstName("one").lastName("lone").build(),
-                StudentRequest.builder().age(12).firstName("two").lastName("ltwo").build(),
-                StudentRequest.builder().age(12).firstName("three").lastName("lthree").build()
+        List<StudentResponse> studentResponses = List.of(
+                StudentResponse.builder().age(12).firstName("one").lastName("lone").build(),
+                StudentResponse.builder().age(12).firstName("two").lastName("ltwo").build(),
+                StudentResponse.builder().age(12).firstName("three").lastName("lthree").build()
         );
-        when(studentServices.getAll()).thenReturn(studentRequests);
+        when(studentServices.getAll()).thenReturn(studentResponses);
 
         String actual = shellController.getAllStudents();
 
-        assertStudentsString(studentRequests, actual);
+        assertStudentsString(studentResponses, actual);
     }
 
     @Test
@@ -61,8 +61,8 @@ class ShellControllerTest {
                 .lastName(lastName)
                 .age(age)
                 .build();
-        StudentRequest resultStudentRequest = StudentRequest.builder().id(UUID.randomUUID().toString()).build();
-        when(studentServices.createNewStudent(studentRequest)).thenReturn(resultStudentRequest);
+        StudentResponse resultStudentResponse = StudentResponse.builder().id(UUID.randomUUID().toString()).build();
+        when(studentServices.createNewStudent(studentRequest)).thenReturn(resultStudentResponse);
 
         shellController.createNewStudent(firstName, lastName, age);
 
@@ -85,12 +85,12 @@ class ShellControllerTest {
         verify(studentServices, times(1)).clearDatabase();
     }
 
-    private void assertStudentsString(List<StudentRequest> studentRequests, String actual) {
-        for (StudentRequest studentRequest : studentRequests) {
+    private void assertStudentsString(List<StudentResponse> studentResponses, String actual) {
+        for (StudentResponse studentResponse : studentResponses) {
             Stream<String> lines = actual.trim().lines();
-            String expectedFirstName = "firstName='" + studentRequest.getFirstName() + "'";
-            String expectedLastName = "lastName='" + studentRequest.getLastName() + "'";
-            String expectedAge = "age=" + studentRequest.getAge();
+            String expectedFirstName = "firstName='" + studentResponse.getFirstName() + "'";
+            String expectedLastName = "lastName='" + studentResponse.getLastName() + "'";
+            String expectedAge = "age=" + studentResponse.getAge();
             Optional<String> first = lines
                     .filter(getStringPredicate(expectedFirstName, expectedLastName, expectedAge)
                     ).findFirst();

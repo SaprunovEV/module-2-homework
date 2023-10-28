@@ -7,7 +7,7 @@ import lombok.Getter;
 @Getter
 @Builder
 @EqualsAndHashCode
-public class StudentRequest {
+public class StudentResponse {
     private String id;
     private String firstName;
     private String lastName;

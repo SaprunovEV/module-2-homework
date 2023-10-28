@@ -4,7 +4,7 @@ import by.sapra.module2homework.events.CreateEvent;
 import by.sapra.module2homework.events.DeleteEvent;
 import by.sapra.module2homework.events.StudentEventPublisher;
 import by.sapra.module2homework.model.StudentPayload;
-import by.sapra.module2homework.model.StudentRequest;
+import by.sapra.module2homework.model.StudentResponse;
 import by.sapra.module2homework.model.entities.StudentEntity;
 import by.sapra.module2homework.repositories.StudentRepository;
 import by.sapra.module2homework.servoces.StudentServices;
@@ -21,9 +21,9 @@ public class StudentServiceImpl implements StudentServices {
     private final StudentRepository repository;
     private final StudentEventPublisher publisher;
     @Override
-    public List<StudentRequest> getAll() {
+    public List<StudentResponse> getAll() {
         List<StudentEntity> all = repository.findAll();
-        return all.stream().map(s -> StudentRequest.builder()
+        return all.stream().map(s -> StudentResponse.builder()
                     .id(s.getId().toString()).age(s.getAge())
                     .firstName(s.getFirstName())
                     .lastName(s.getLastName())
@@ -32,14 +32,14 @@ public class StudentServiceImpl implements StudentServices {
     }
 
     @Override
-    public StudentRequest createNewStudent(StudentPayload studentRequest) {
+    public StudentResponse createNewStudent(StudentPayload studentRequest) {
         StudentEntity entity = repository.save(StudentEntity.builder()
                 .age(studentRequest.getAge())
                 .lastName(studentRequest.getLastName())
                 .firstName(studentRequest.getFirstName())
                 .build());
 
-        StudentRequest result = StudentRequest.builder()
+        StudentResponse result = StudentResponse.builder()
                 .age(entity.getAge())
                 .firstName(entity.getFirstName())
                 .lastName(entity.getLastName())
@@ -52,18 +52,18 @@ public class StudentServiceImpl implements StudentServices {
     }
 
     @Override
-    public StudentRequest deleteStudent(String eq) {
+    public StudentResponse deleteStudent(String eq) {
         Optional<StudentEntity> entity = repository.delete(UUID.fromString(eq));
         if (entity.isPresent()) {
             StudentEntity student = entity.get();
             publisher.deleteEventPublish(this, new DeleteEvent(student.getId().toString()));
-            return StudentRequest.builder()
+            return StudentResponse.builder()
                     .id(student.getId().toString())
                     .lastName(student.getLastName())
                     .firstName(student.getFirstName())
                     .build();
         }
-        return StudentRequest.builder().id("").firstName("").lastName("").age(0).build();
+        return StudentResponse.builder().id("").firstName("").lastName("").age(0).build();
     }
 
     @Override

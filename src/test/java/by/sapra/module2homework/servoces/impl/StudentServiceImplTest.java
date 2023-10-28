@@ -4,7 +4,7 @@ import by.sapra.module2homework.events.CreateEvent;
 import by.sapra.module2homework.events.DeleteEvent;
 import by.sapra.module2homework.events.StudentEventPublisher;
 import by.sapra.module2homework.model.StudentPayload;
-import by.sapra.module2homework.model.StudentRequest;
+import by.sapra.module2homework.model.StudentResponse;
 import by.sapra.module2homework.model.entities.StudentEntity;
 import by.sapra.module2homework.repositories.StudentRepositoryConf;
 import by.sapra.module2homework.servoces.StudentServices;
@@ -45,7 +45,7 @@ class StudentServiceImplTest {
     void shouldReturnAllStudents() throws Exception {
         List<StudentEntity> entities = saveEntities();
 
-        List<StudentRequest> actual = services.getAll();
+        List<StudentResponse> actual = services.getAll();
 
         assertAll(() -> {
             assertEquals(entities.size(), actual.size());
@@ -73,7 +73,7 @@ class StudentServiceImplTest {
     void shouldPublishIdDeletingStudent() throws Exception {
         String idForDelete = saveEntities().get(0).getId().toString();
 
-        StudentRequest studentRequest = services.deleteStudent(idForDelete);
+        StudentResponse studentResponse = services.deleteStudent(idForDelete);
 
         assertFalse(studentMap.containsKey(UUID.fromString(idForDelete)));
 
@@ -85,13 +85,13 @@ class StudentServiceImplTest {
         UUID id = saveEntities().get(0).getId();
         studentMap.remove(id);
 
-        StudentRequest studentRequest = services.deleteStudent(id.toString());
+        StudentResponse studentResponse = services.deleteStudent(id.toString());
 
         assertAll(() -> {
-            assertTrue(studentRequest.getId().isEmpty());
-            assertTrue(studentRequest.getFirstName().isEmpty());
-            assertTrue(studentRequest.getLastName().isEmpty());
-            assertEquals(0, (int) studentRequest.getAge());
+            assertTrue(studentResponse.getId().isEmpty());
+            assertTrue(studentResponse.getFirstName().isEmpty());
+            assertTrue(studentResponse.getLastName().isEmpty());
+            assertEquals(0, (int) studentResponse.getAge());
         });
 
         verify(studentEventPublisher, times(0)).deleteEventPublish(eq(services), any(DeleteEvent.class));
@@ -105,14 +105,14 @@ class StudentServiceImplTest {
                 .lastName("testLastName")
                 .build();
 
-        StudentRequest newStudent = services.createNewStudent(studentPayload);
+        StudentResponse newStudent = services.createNewStudent(studentPayload);
 
         assertStudentCreation(studentPayload, newStudent);
 
         verify(studentEventPublisher, times(1)).createStudentPublish(eq(services), eq(new CreateEvent(newStudent)));
     }
 
-    private void assertStudentCreation(StudentPayload studentPayload, StudentRequest newStudent) {
+    private void assertStudentCreation(StudentPayload studentPayload, StudentResponse newStudent) {
         assertAll(() -> {
             assertTrue(studentMap.containsKey(UUID.fromString(newStudent.getId())));
             StudentEntity entity = studentMap.get(UUID.fromString(newStudent.getId()));
@@ -122,8 +122,8 @@ class StudentServiceImplTest {
         });
     }
 
-    private List<String> assertList(List<StudentEntity> entities, List<StudentRequest> actual) {
-        return actual.stream().map(StudentRequest::getId).filter(id -> !entities.stream().map(StudentEntity::getId).map(Objects::toString).toList().contains(id)).toList();
+    private List<String> assertList(List<StudentEntity> entities, List<StudentResponse> actual) {
+        return actual.stream().map(StudentResponse::getId).filter(id -> !entities.stream().map(StudentEntity::getId).map(Objects::toString).toList().contains(id)).toList();
     }
 
     @AfterEach

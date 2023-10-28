@@ -10,6 +10,6 @@ public class CreateStudentEventListener {
 
     @EventListener
     public void handleCreateStudentEvent(ApplicationCreateStudentEvent event) {
-        System.out.println(MessageFormat.format("Student {0} have been created", event.getEvent().getStudentRequest()));
+        System.out.println(MessageFormat.format("Student {0} have been created", event.getEvent().getStudentResponse()));
     }
 }
