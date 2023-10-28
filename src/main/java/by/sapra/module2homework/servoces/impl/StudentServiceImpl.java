@@ -1,5 +1,7 @@
 package by.sapra.module2homework.servoces.impl;
 
+import by.sapra.module2homework.events.DeleteEvent;
+import by.sapra.module2homework.events.StudentEventPublisher;
 import by.sapra.module2homework.model.StudentPayload;
 import by.sapra.module2homework.model.StudentRequest;
 import by.sapra.module2homework.model.entities.StudentEntity;
@@ -15,6 +17,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class StudentServiceImpl implements StudentServices {
     private final StudentRepository repository;
+    private final StudentEventPublisher publisher;
     @Override
     public List<StudentRequest> getAll() {
         List<StudentEntity> all = repository.findAll();
@@ -38,6 +41,9 @@ public class StudentServiceImpl implements StudentServices {
 
     @Override
     public List<String> clearDatabase() {
-        return null;
+        return repository.clear().stream()
+                .map(e -> e.getId().toString())
+                .peek(id -> publisher.deleteEventPublish(this, new DeleteEvent(id)))
+                .toList();
     }
 }

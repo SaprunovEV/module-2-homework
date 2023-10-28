@@ -21,6 +21,7 @@ import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
@@ -63,7 +64,7 @@ class StudentServiceImplTest {
             assertTrue(strings.isEmpty());
         });
 
-        verify(studentEventPublisher, times(expected.size())).deleteEventPublish(services, any(DeleteEvent.class));
+        verify(studentEventPublisher, times(expected.size())).deleteEventPublish(eq(services), any(DeleteEvent.class));
     }
 
     private List<String> assertList(List<StudentEntity> entities, List<StudentRequest> actual) {

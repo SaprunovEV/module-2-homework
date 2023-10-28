@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Bean;
 @MockBean(StudentEventPublisher.class)
 public class StudentServiceImplConf {
     @Bean
-    public StudentServices studentServices(StudentRepository repository) {
-        return new StudentServiceImpl(repository);
+    public StudentServices studentServices(StudentRepository repository, StudentEventPublisher publisher) {
+        return new StudentServiceImpl(repository, publisher);
     }
 }
