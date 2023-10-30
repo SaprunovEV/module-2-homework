@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-@ConditionalOnProperty("app.init-mode.enabled")
+@ConditionalOnProperty("app.init.enabled")
 public class InitConfig {
     @Bean
     public InitApplicationReadyEventListener initApplicationReadyEventListener(StudentRepository repo) {
